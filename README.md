@@ -1,5 +1,9 @@
 # Probability Lab · Teaching Edition
 
+[![Quality](https://github.com/EssenceSentry/probability-lab-teaching/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/EssenceSentry/probability-lab-teaching/actions/workflows/pages.yml)
+[![Node.js](https://img.shields.io/badge/Node.js-24-2563eb?logo=nodedotjs&logoColor=white)](package.json)
+[![Interactive lab](https://img.shields.io/badge/Interactive%20lab-open-2563eb)](https://essencesentry.github.io/probability-lab-teaching/)
+
 Follow a single draw through a Bayesian model. Click a node to inspect its distribution, then change the draw to see which values move together. Both examples use synthetic observations and run in your browser.
 
 **[How much should we trust a group of two?](https://essencesentry.github.io/probability-lab-teaching/?lesson=pooling)** Compare independent and partially pooled estimates, then move one posterior draw all the way to a prediction.
@@ -12,6 +16,8 @@ Follow a single draw through a Bayesian model. Click a node to inspect its distr
 ![Coin tosses in Probability Lab with the model graph and distribution inspector.](docs/coin-model.webp)
 
 ## Run locally
+
+GitHub Actions validates both model graphs and their saved draws, checks TypeScript, and builds the app on every push and pull request. Run `npm run check:models` and `npm run build` to reproduce the checks locally.
 
 Use Node.js 24 and npm.
 
