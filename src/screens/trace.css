@@ -1,0 +1,866 @@
+.trace-studio {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card);
+}
+.trace-controls,
+.trace-navigation,
+.trace-bar,
+.tc-type,
+.tc-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trace-controls {
+  flex: none;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.trace-controls select {
+  margin-left: auto;
+  max-width: 250px;
+}
+.trace-navigation button,
+.trace-bar button {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--card);
+  padding: 4px 7px;
+  min-height: 29px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+}
+.tc-foot,
+.mono {
+  font:
+    12px var(--ff-mono),
+    monospace;
+}
+.trace-split,
+.trace-left,
+.trace-stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.trace-stage {
+  position: relative;
+  isolation: isolate;
+}
+.trace-detail {
+  position: absolute;
+  z-index: 2;
+  inset: 8px 8px auto auto;
+  width: min(310px, calc(100% - 16px));
+  max-height: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 3px 15px color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+.trace-detail-scroll {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 3px 10px 6px;
+}
+.trace-detail-scroll p {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+.detail-heading.trace-bar {
+  padding: 4px 6px 4px 10px;
+  min-height: 34px;
+  flex-wrap: nowrap;
+  gap: 5px;
+}
+.detail-heading h3 {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 650;
+}
+.detail-heading button {
+  flex: none;
+}
+.detail-reading,
+.detail-observed,
+.weight-change,
+.candidate-control {
+  padding-block: 4px;
+}
+.detail-reading b,
+.detail-observed code,
+.weight-change b {
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+.detail-reading small {
+  font-size: 11px;
+}
+.candidate-control {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+}
+.candidate-control input {
+  min-width: 0;
+  flex: 1;
+  accent-color: var(--primary);
+}
+.detail-section {
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+.detail-section summary {
+  cursor: pointer;
+  padding-block: 5px;
+  font-weight: 550;
+  color: var(--ink-2);
+}
+.detail-section[open] > :not(summary) {
+  margin-block: 5px;
+}
+.trace-detail-scroll .coord {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.trace-detail-scroll .coord select {
+  min-width: 0;
+  flex: 1;
+}
+.trace-bar {
+  padding: 6px 12px;
+  justify-content: space-between;
+  min-height: 39px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.trace-view {
+  position: relative;
+  overflow: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  min-height: 0;
+  cursor: grab;
+  touch-action: none;
+  background:
+    radial-gradient(var(--border) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--sunken);
+}
+.trace-view:active {
+  cursor: grabbing;
+}
+.trace-space,
+.trace-world {
+  position: relative;
+}
+.trace-world {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+}
+.trace-wires {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.trace-wires polyline {
+  stroke: var(--muted-foreground);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.6;
+  stroke-linejoin: round;
+}
+.trace-wires .flow {
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  opacity: 1;
+}
+.trace-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: stretch;
+  text-align: left;
+  padding: 9px 12px 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--foreground) 9%, transparent);
+  user-select: none;
+}
+.trace-card:hover,
+.trace-card.upstream {
+  border-color: var(--muted-foreground);
+}
+.trace-card.live {
+  border-color: var(--primary);
+  outline: 1px solid var(--primary);
+  outline-offset: -2px;
+}
+.trace-card.inspected {
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.trace-card[data-kind="observed"] {
+  background: color-mix(in srgb, var(--series-2) 10%, var(--card));
+}
+.trace-card[data-kind="observed"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--series-2);
+  pointer-events: none;
+}
+.trace-card[data-kind="observed"] .tc-type,
+.trace-card[data-kind="observed"] .tc-foot b {
+  color: color-mix(in srgb, var(--series-2) 58%, var(--foreground));
+}
+.tc-type {
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--muted-foreground);
+  font-weight: 600;
+}
+.tc-type small {
+  font-size: 10px;
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.live .tc-type small {
+  color: var(--primary);
+}
+.tc-symbol,
+.tc-definition {
+  font-family: var(--ff-mono), monospace;
+  overflow-wrap: anywhere;
+}
+.trace-card strong {
+  font-size: 15px;
+  line-height: 21px;
+}
+.tc-definition,
+.trace-detail-scroll code.formula {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.expression-line {
+  display: block;
+}
+.tc-definition {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--ink-2);
+  margin: 2px 0 4px;
+}
+.tc-params,
+.tc-foot {
+  font-family: var(--ff-mono), monospace;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.tc-params {
+  overflow-wrap: anywhere;
+}
+.tc-foot {
+  margin-top: auto;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 3px;
+}
+.tc-foot b {
+  color: var(--foreground);
+}
+.trace-card[data-kind="input"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  align-content: center;
+  gap: 2px 7px;
+  padding: 4px 8px;
+  min-height: 42px;
+  border-radius: 6px;
+}
+.tc-input-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 16px;
+}
+.tc-input-name .tc-symbol {
+  font-size: 13px;
+  line-height: 16px;
+}
+.tc-input-name small,
+.tc-input-value {
+  font:
+    11px var(--ff-mono),
+    monospace;
+}
+.tc-input-name small {
+  color: var(--muted-foreground);
+}
+.tc-input-value {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--foreground);
+}
+.tc-input-source {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+.tc-input-source > span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.tc-input-source .tc-definition {
+  min-width: 0;
+  margin: 0;
+  font-size: 11px;
+  line-height: 14px;
+}
+.trace-navigation {
+  padding: 5px 10px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.trace-navigation select {
+  margin-right: auto;
+  max-width: 220px;
+}
+.trace-navigation button[aria-pressed="true"] {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+@media (max-width: 800px) {
+  .trace-controls select {
+    margin-left: 0;
+  }
+  .trace-controls {
+    gap: 5px;
+  }
+}
+@media (max-width: 650px) {
+  .trace-controls {
+    padding: 4px 6px;
+  }
+  .trace-controls select {
+    font-size: 12px;
+    max-width: 48%;
+    flex: 1;
+  }
+  .trace-bar {
+    min-height: 30px;
+    padding: 3px 8px;
+  }
+  .trace-navigation {
+    gap: 3px;
+    padding: 2px 4px;
+  }
+  .trace-navigation select {
+    max-width: 43%;
+  }
+}
+@media (pointer: coarse) {
+  .trace-navigation button,
+  .trace-bar button,
+  .draw-replay {
+    min-height: 40px;
+  }
+}
+
+.trace-event {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  min-width: 0;
+  border-top: 1px solid var(--border);
+  padding: 3px 10px;
+  background: var(--card);
+  font-size: 12px;
+}
+.trace-event span {
+  min-width: 0;
+  flex: 1;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.trace-event button {
+  flex: none;
+  color: var(--primary);
+  font-weight: 600;
+  min-height: 28px;
+}
+.archive-fit {
+  font-size: 13px;
+  margin: 12px 0;
+  padding: 9px 0;
+  border-block: 1px solid var(--border);
+}
+.archive-fit summary {
+  font-weight: 620;
+  cursor: pointer;
+  color: var(--primary);
+}
+.archive-fit strong,
+.archive-fit > span {
+  display: block;
+  margin: 6px 0;
+}
+.archive-fit dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.archive-fit dd {
+  font-family: var(--ff-mono), monospace;
+}
+@media (max-width: 650px) {
+  .trace-detail {
+    inset: auto 6px 6px auto;
+    max-height: 44%;
+    width: min(310px, calc(100% - 12px));
+  }
+  .trace-navigation select {
+    flex: 1;
+    min-width: 0;
+    max-width: 180px;
+  }
+  .trace-event {
+    gap: 5px;
+    padding-inline: 5px;
+  }
+}
+@media (pointer: coarse) {
+  .detail-section summary,
+  .trace-event button {
+    min-height: 40px;
+  }
+  .trace-detail-scroll .coord select {
+    min-height: 40px;
+  }
+}
+.canvas-explorer {
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.canvas-explorer .trace-studio {
+  border: 0;
+  border-radius: 0;
+}
+.explorer-toolbar {
+  flex-wrap: nowrap;
+  gap: 9px;
+  min-width: 0;
+  padding: 3px 10px;
+  height: 44px;
+  background: var(--card);
+}
+.explorer-mark {
+  display: inline-flex;
+  flex: none;
+}
+.explorer-mark svg {
+  width: 24px;
+  height: 24px;
+}
+.explorer-toolbar .explorer-picker {
+  font-weight: 620;
+  flex: 0 1 260px;
+  margin: 0;
+  min-width: 0;
+  max-width: 260px;
+}
+.explorer-more,
+.explorer-files :is(a, button),
+.explorer-error button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 32px;
+}
+.explorer-more {
+  width: 34px;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.explorer-options {
+  position: fixed;
+  inset: 44px 6px auto auto;
+  margin: 0;
+  padding: 6px;
+  max-width: calc(100vw - 12px);
+  width: max-content;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+.explorer-options:popover-open {
+  display: grid;
+  gap: 6px;
+}
+.explorer-files {
+  display: grid;
+}
+.explorer-files :is(a, button) {
+  font-size: 13px;
+  padding: 5px 10px;
+  justify-content: flex-start;
+  border-radius: 5px;
+}
+.explorer-files :is(a, button):hover,
+.explorer-more:hover {
+  background: var(--muted);
+}
+.explorer-transport {
+  display: grid;
+  gap: 9px;
+  padding: 5px 3px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.explorer-transport select {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+}
+.explorer-legend {
+  margin: 9px 0 2px;
+}
+.explorer-error {
+  position: fixed;
+  top: 48px;
+  left: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 16px);
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--error, var(--foreground));
+}
+@media (max-width: 1199px) {
+  .explorer-toolbar {
+    gap: 6px;
+  }
+  .explorer-toolbar .explorer-picker {
+    max-width: none;
+    flex: 0 1 320px;
+  }
+}
+@media (max-width: 650px) {
+  .explorer-toolbar {
+    padding: 2px 5px;
+  }
+  .explorer-toolbar .explorer-picker {
+    flex: 1;
+    max-width: none;
+  }
+  .explorer-toolbar .explorer-mark {
+    display: none;
+  }
+}
+@media (pointer: coarse) {
+  .explorer-more,
+  .explorer-files :is(a, button),
+  .explorer-transport select,
+  .explorer-toolbar .explorer-picker {
+    min-height: 40px;
+  }
+}
+
+.draw-replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  min-height: 32px;
+  font-size: 13px;
+  font-weight: 550;
+}
+.draw-replay:hover {
+  background: var(--muted);
+}
+.explorer-toolbar .draw-replay {
+  margin-left: auto;
+}
+.explorer-toolbar .explorer-more:only-of-type {
+  margin-left: auto;
+}
+.replay-setting {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-2);
+  min-width: 0;
+}
+.explorer-transport .replay-setting select {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+@media (pointer: coarse) {
+  .draw-replay {
+    min-height: 40px;
+  }
+}
+
+.trace-wires .wire-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12px;
+  pointer-events: stroke;
+  cursor: pointer;
+  outline: none;
+}
+.trace-wires[data-tracing] polyline:not(.flow) {
+  opacity: 0.2;
+}
+.trace-card[data-endpoint] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
+}
+.wire-note {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  max-width: calc(100% - 16px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--primary-ink);
+  background: var(--card);
+  font:
+    12px var(--ff-mono),
+    monospace;
+}
+.wire-note button {
+  min-width: 0;
+  padding: 3px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+@media (pointer: coarse) {
+  .wire-note button {
+    min-height: 40px;
+  }
+}
+
+.trace-card[data-foldable] .tc-type {
+  padding-right: 20px;
+}
+.trace-card[data-foldable][data-kind="input"] {
+  padding-right: 32px;
+}
+.trace-fold {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 21px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.trace-fold:hover,
+.trace-fold[aria-expanded="false"] {
+  color: var(--primary-ink);
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+@media (pointer: coarse) {
+  .trace-fold::after {
+    content: "";
+    position: absolute;
+    inset: -11px;
+  }
+}
+.trace-wires polyline[data-evidence] {
+  stroke: var(--series-2);
+  stroke-dasharray: 5 3;
+  opacity: 1;
+}
+.trace-card[data-parquet] {
+  border-color: var(--series-2);
+}
+.tc-comparison {
+  font: 11px var(--ff-mono);
+  color: var(--ink-2);
+}
+.tc-comparison i {
+  display: inline-block;
+  width: 11px;
+  vertical-align: middle;
+  border-top: 2px dashed var(--series-3);
+  margin-right: 4px;
+}
+.tc-comparison b {
+  color: var(--primary-ink);
+}
+.dataset-summary {
+  font-size: 12px;
+  padding: 3px 10px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+@media (max-width: 850px) {
+  .dataset-summary {
+    display: none;
+  }
+}
+.connect-data {
+  white-space: nowrap;
+}
+.likelihood-junction {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 15px;
+  background: var(--card);
+  color: var(--ink-2);
+  font: 12px var(--ff-mono);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.explorer-toolbar .connect-data {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--card);
+  font-size: 13px;
+  min-height: 29px;
+}
+.reference-source {
+  font-size: 12px;
+  color: var(--ink-2);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.reference-dialog {
+  width: max-content;
+  min-width: min(340px, calc(100vw - 24px));
+  max-width: min(900px, calc(100vw - 24px));
+}
+.reference-table {
+  overflow: auto;
+  max-height: 55vh;
+}
+.reference-table table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.reference-table caption {
+  text-align: left;
+  color: var(--ink-2);
+  padding: 4px 0;
+}
+.reference-table :is(th, td) {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+  min-width: 6ch;
+}
+.reference-table th {
+  background: var(--card);
+  position: sticky;
+  top: 0;
+}
+@media (max-width: 850px) {
+  .reference-source {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .explorer-toolbar .draw-replay span {
+    display: none;
+  }
+  .explorer-toolbar .draw-replay {
+    width: 34px;
+    flex: none;
+  }
+}
+@media (pointer: coarse) {
+  .explorer-toolbar .connect-data {
+    min-height: 40px;
+  }
+}
+
+.reference-fit {
+  margin-top: 10px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.reference-fit summary {
+  cursor: pointer;
+}
+.reference-fit dl > div {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}

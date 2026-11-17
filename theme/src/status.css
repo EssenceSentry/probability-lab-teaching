@@ -1,0 +1,12 @@
+/*
+ * Status hues are the same in every direction. Light mode uses darker steps of
+ * green and amber so status marks stay legible on light surfaces, and
+ * critical-ink is the readable red for text such as destructive buttons.
+ */
+:root {
+  --status-good: light-dark(#0b850b, #0ca30c);
+  --status-warning: light-dark(#a87000, #fab219);
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+  --status-critical-ink: light-dark(#a82626, #f07070);
+}
