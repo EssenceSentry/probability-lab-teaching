@@ -23,7 +23,9 @@
     "@fontsource-variable/newsreader": "^5.3.0"
   },
   "peerDependencies": {
-    "tailwindcss": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
     "vite": "^8.0.0"
   }
 }
