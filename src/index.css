@@ -783,3 +783,15 @@ footer span {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+.lesson-table {
+  border-collapse: collapse;
+  margin-block: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.lesson-table th,
+.lesson-table td {
+  padding: .6rem .8rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}

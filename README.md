@@ -2,6 +2,8 @@
 
 Follow a single draw through a Bayesian model. Click a node to inspect its distribution, then change the draw to see which values move together. Both examples use synthetic observations and run in your browser.
 
+**[How much should we trust a group of two?](https://essencesentry.github.io/probability-lab-teaching/?lesson=pooling)** Compare independent and partially pooled estimates, then move one posterior draw all the way to a prediction.
+
 **[Try the interactive lab](https://essencesentry.github.io/probability-lab-teaching/)**
 
 - **[Coin tosses](https://essencesentry.github.io/probability-lab-teaching/?model=coin)**. Select the bias node. Under **Canvas options → Saved run**, compare 7 heads in 10 tosses with 70 in 100. The observed proportion is the same. How does the extra evidence change the uncertainty about the next ten tosses?

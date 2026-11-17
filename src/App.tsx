@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { PoolingLesson } from "./PoolingLesson"
 import { AppIcon } from "./app-icon"
 import { download, readProgram } from "./lib/program"
 import coin from "./programs/coin.json"
@@ -22,6 +23,10 @@ export default function App() {
     setModel(value)
   }
 
+  if (new URLSearchParams(location.search).get("lesson") === "pooling") {
+    return <PoolingLesson program={programs.pooling} />
+  }
+
   return (
     <main className="canvas-explorer">
       <h1 className="sr-only">Probability Lab · {program.name}</h1>
@@ -37,7 +42,7 @@ export default function App() {
             </select>
           </>
         ),
-        actions: <button type="button" onClick={() => download(program)}>Download this program</button>,
+        actions: <><a href="?lesson=pooling">Compare pooled estimates</a><button type="button" onClick={() => download(program)}>Download this program</button></>,
       }} />
     </main>
   )
